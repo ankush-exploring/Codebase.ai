@@ -19,8 +19,6 @@ export const users = pgTable(
     name: varchar('name', { length: 100 }).notNull(),
     passwordHash: text('password_hash'),
     avatar: text('avatar'),
-    provider: varchar('provider', { length: 50 }).default('local').notNull(),
-    providerId: varchar('provider_id', { length: 255 }),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },

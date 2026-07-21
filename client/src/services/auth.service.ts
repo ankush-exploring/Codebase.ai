@@ -44,11 +44,6 @@ export const authService = {
     return response.data;
   },
 
-  googleAuth: async (credential: string) => {
-    const response = await api.post('/auth/google', { credential });
-    return response.data;
-  },
-
   refreshToken: async (): Promise<void> => {
     await api.post('/auth/refresh');
   },

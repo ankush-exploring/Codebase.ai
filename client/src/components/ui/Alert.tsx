@@ -8,10 +8,10 @@ interface AlertProps {
 
 export default function Alert({ variant = 'info', children, className = '' }: AlertProps) {
   const variants = {
-    info: 'bg-primary-500/10 border-primary-500/50 text-primary-600 dark:text-primary-400',
-    success: 'bg-green-500/10 border-green-500/50 text-green-600 dark:text-green-400',
-    warning: 'bg-yellow-500/10 border-yellow-500/50 text-yellow-600 dark:text-yellow-400',
-    error: 'bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400',
+    info: 'bg-[#007acc]/10 border-[#007acc]/30 text-[#007acc]',
+    success: 'bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400',
+    warning: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-600 dark:text-yellow-400',
+    error: 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400',
   };
 
   const icons = {
@@ -38,7 +38,7 @@ export default function Alert({ variant = 'info', children, className = '' }: Al
   };
 
   return (
-    <div className={`flex items-start gap-3 p-4 rounded-2xl border ${variants[variant]} ${className}`}>
+    <div className={`flex items-start gap-3 p-3 rounded-lg border text-sm ${variants[variant]} ${className}`}>
       <div className="flex-shrink-0 mt-0.5">{icons[variant]}</div>
       <div className="text-sm">{children}</div>
     </div>

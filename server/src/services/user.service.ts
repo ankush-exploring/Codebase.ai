@@ -12,7 +12,6 @@ export const userService = {
         email: users.email,
         name: users.name,
         avatar: users.avatar,
-        provider: users.provider,
         createdAt: users.createdAt,
         updatedAt: users.updatedAt,
       })
@@ -56,7 +55,7 @@ export const userService = {
     }
 
     if (!user.passwordHash) {
-      throw new BadRequestError('Password not set. Login with OAuth.');
+      throw new BadRequestError('Password not set for this account.');
     }
 
     const valid = await bcrypt.compare(currentPassword, user.passwordHash);

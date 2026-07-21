@@ -44,27 +44,6 @@ export const authController = {
     res.json({ success: true, data: user });
   }),
 
-  googleAuth: asyncHandler(async (req: Request, res: Response, _next: NextFunction) => {
-    const { credential } = req.body;
-    if (!credential) {
-      res.status(400).json({
-        success: false,
-        error: { code: 'MISSING_CREDENTIAL', message: 'Google credential is required' },
-      });
-      return;
-    }
-
-    const result = await authService.googleAuth(credential);
-
-    res.json({
-      success: true,
-      data: {
-        user: result.user,
-        accessToken: result.accessToken,
-      },
-    });
-  }),
-
   logout: asyncHandler(async (_req: Request, res: Response, _next: NextFunction) => {
     res.json({ success: true, data: { message: 'Logged out' } });
   }),

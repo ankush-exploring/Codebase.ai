@@ -15,38 +15,34 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-64 min-h-[calc(100vh-4rem)] bg-clay-surface dark:bg-slate-900/50 border-r border-clay dark:border-slate-800/80">
-      <nav className="p-4 space-y-1">
-        {navigation.map((item, index) => {
+    <aside className="w-56 min-h-[calc(100vh-3rem)] bg-clay-surface dark:bg-[#252526] border-r border-clay dark:border-[#3c3c3c]">
+      <nav className="p-2 space-y-0.5">
+        {navigation.map((item) => {
           const active = isActive(item.href, item.exact);
           return (
             <Link
               key={item.name}
               to={item.href}
-              style={{ animationDelay: `${index * 50}ms` }}
-              className={`relative flex items-center gap-3 px-3 py-2.5 rounded-2xl transition-all duration-200 animate-slide-in-left group ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-sm ${
                 active
-                  ? 'bg-gradient-to-r from-primary-500/20 to-secondary-500/10 text-primary-600 dark:text-primary-400 shadow-clay-sm dark:shadow-glow-sm'
-                  : 'text-clay-secondary dark:text-slate-400 hover:text-clay dark:hover:text-white hover:bg-clay-elevated dark:hover:bg-slate-800/60'
+                  ? 'bg-[#007acc]/10 text-[#007acc] dark:text-[#007acc]'
+                  : 'text-clay-secondary dark:text-[#969696] hover:text-clay dark:hover:text-[#cccccc] hover:bg-clay-elevated dark:hover:bg-[#2a2d2e]'
               }`}
             >
-              {active && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-gradient-to-b from-primary-400 to-secondary-400 rounded-r-full" />
-              )}
               <svg
-                className={`w-5 h-5 transition-transform duration-200 ${active ? 'scale-110' : 'group-hover:scale-110'}`}
+                className="w-4 h-4 flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                strokeWidth={active ? 2.5 : 2}
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={active ? 2.5 : 2}
                   d={item.icon}
                 />
               </svg>
-              <span className={`text-sm ${active ? 'font-semibold' : 'font-medium'}`}>{item.name}</span>
+              <span className={active ? 'font-medium' : ''}>{item.name}</span>
             </Link>
           );
         })}

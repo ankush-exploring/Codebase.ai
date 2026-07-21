@@ -4,29 +4,29 @@
 
 @layer base {
   :root {
-    --clay-bg: #f5f0eb;
-    --clay-surface: #ede3d8;
-    --clay-elevated: #faf8f6;
-    --clay-border: #dcc9b4;
-    --clay-text: #5e4535;
-    --clay-text-secondary: #8c6547;
-    --clay-muted: #b8926a;
-    --scrollbar-track: #ede3d8;
-    --scrollbar-thumb: #c9aa8a;
-    --ring-offset: #f5f0eb;
+    --clay-bg: #ffffff;
+    --clay-surface: #f3f3f3;
+    --clay-elevated: #ffffff;
+    --clay-border: #e0e0e0;
+    --clay-text: #333333;
+    --clay-text-secondary: #666666;
+    --clay-muted: #999999;
+    --scrollbar-track: #f3f3f3;
+    --scrollbar-thumb: #cccccc;
+    --ring-offset: #ffffff;
   }
 
   .dark {
-    --clay-bg: #1c1917;
-    --clay-surface: #292524;
-    --clay-elevated: #1c1917;
-    --clay-border: #44403c;
-    --clay-text: #e7e5e4;
-    --clay-text-secondary: #a8a29e;
-    --clay-muted: #78716c;
-    --scrollbar-track: #292524;
-    --scrollbar-thumb: #57534e;
-    --ring-offset: #1c1917;
+    --clay-bg: #1e1e1e;
+    --clay-surface: #252526;
+    --clay-elevated: #2d2d2d;
+    --clay-border: #3c3c3c;
+    --clay-text: #cccccc;
+    --clay-text-secondary: #969696;
+    --clay-muted: #666666;
+    --scrollbar-track: #252526;
+    --scrollbar-thumb: #424242;
+    --ring-offset: #1e1e1e;
   }
 
   * {
@@ -40,7 +40,7 @@
   }
 
   ::selection {
-    @apply bg-primary-500/30 text-white;
+    @apply bg-[#007acc]/30 text-white;
   }
 
   ::-webkit-scrollbar {
@@ -58,7 +58,7 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-slate-600;
+    @apply bg-[#007acc];
   }
 
   * {
@@ -67,14 +67,14 @@
   }
 
   *:focus-visible {
-    @apply outline-none ring-2 ring-primary-500/50 ring-offset-2;
+    @apply outline-none ring-2 ring-[#007acc]/50 ring-offset-2;
     ring-offset-color: var(--ring-offset);
   }
 }
 
 @layer components {
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-primary-300 to-secondary-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#007acc] via-[#007acc] to-[#4fc3f7];
   }
 
   .gradient-border {
@@ -87,7 +87,7 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, theme('colors.primary.500'), theme('colors.secondary.500'));
+    background: linear-gradient(135deg, #007acc, #4fc3f7);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -109,14 +109,14 @@
     background-color: var(--clay-surface);
     border-color: var(--clay-border);
     border-width: 1px;
-    @apply rounded-2xl;
+    @apply rounded-xl;
   }
 
   .clay-elevated {
     background-color: var(--clay-elevated);
     border-color: var(--clay-border);
     border-width: 1px;
-    @apply rounded-2xl;
+    @apply rounded-xl;
   }
 
   .clay-input {

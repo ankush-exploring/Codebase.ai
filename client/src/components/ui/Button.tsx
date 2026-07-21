@@ -8,20 +8,20 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className = '', variant = 'primary', size = 'md', isLoading, children, disabled, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-2xl transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variants = {
-      primary: 'bg-gradient-to-br from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 shadow-clay-sm hover:shadow-clay active:shadow-clay-inset focus:ring-primary-500',
-      secondary: 'bg-gradient-to-br from-secondary-500 to-secondary-600 text-white hover:from-secondary-600 hover:to-secondary-700 shadow-clay-sm hover:shadow-clay active:shadow-clay-inset focus:ring-secondary-500',
-      outline: 'border-2 border-clay text-clay hover:bg-clay-surface active:shadow-clay-inset focus:ring-slate-500 dark:text-clay-text dark:border-slate-600 dark:hover:bg-slate-800',
-      ghost: 'text-clay-secondary hover:bg-clay-surface active:shadow-clay-inset focus:ring-slate-500 dark:text-slate-300 dark:hover:bg-slate-800',
-      danger: 'bg-gradient-to-br from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 shadow-clay-sm hover:shadow-clay active:shadow-clay-inset focus:ring-red-500',
+      primary: 'bg-[#007acc] text-white hover:bg-[#006bb3] shadow-clay-sm focus:ring-[#007acc]/50',
+      secondary: 'bg-[#4fc3f7] text-white hover:bg-[#3db8e8] shadow-clay-sm focus:ring-[#4fc3f7]/50',
+      outline: 'border border-clay dark:border-[#3c3c3c] text-clay dark:text-[#cccccc] hover:bg-clay-surface dark:hover:bg-[#2a2d2e] focus:ring-[#007acc]/50',
+      ghost: 'text-clay-secondary dark:text-[#969696] hover:bg-clay-surface dark:hover:bg-[#2a2d2e] focus:ring-[#007acc]/50',
+      danger: 'bg-red-500 text-white hover:bg-red-600 shadow-clay-sm focus:ring-red-500/50',
     };
 
     const sizes = {
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-6 py-3 text-lg',
+      sm: 'px-3 py-1.5 text-xs',
+      md: 'px-4 py-2 text-sm',
+      lg: 'px-6 py-3 text-base',
     };
 
     return (

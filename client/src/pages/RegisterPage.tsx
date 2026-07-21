@@ -35,27 +35,30 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-clay dark:bg-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-2xl flex items-center justify-center shadow-clay-sm">
-              <span className="text-white font-bold text-xl">C</span>
+    <div className="min-h-screen bg-clay dark:bg-[#1e1e1e] flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-6">
+          <Link to="/" className="inline-flex items-center gap-2 mb-4">
+            <div className="w-9 h-9 bg-gradient-to-br from-[#007acc] to-[#4fc3f7] rounded-xl flex items-center justify-center shadow-clay-sm">
+              <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18l-6-6 6-6" />
+                <path d="M15 6l6 6-6 6" />
+              </svg>
             </div>
-            <span className="font-semibold text-clay dark:text-white text-xl">codebase<span className="gradient-text">.ai</span></span>
+            <span className="font-semibold text-clay dark:text-[#cccccc] text-lg">codebase<span className="gradient-text">.ai</span></span>
           </Link>
-          <h1 className="text-2xl font-bold text-clay dark:text-white">Create an account</h1>
-          <p className="text-clay-secondary dark:text-slate-400 mt-2">Get started with codebase.ai</p>
+          <h1 className="text-xl font-bold text-clay dark:text-[#cccccc]">Create an account</h1>
+          <p className="text-sm text-clay-secondary dark:text-[#969696] mt-1">Get started with codebase.ai</p>
         </div>
 
-        <div className="clay-card p-6 shadow-clay-sm">
+        <div className="clay-card p-5 shadow-clay-sm">
           {error && (
-            <Alert variant="error" className="mb-4">
+            <Alert variant="error" className="mb-3">
               {error}
             </Alert>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <Input
               label="Name"
               type="text"
@@ -94,9 +97,9 @@ export default function RegisterPage() {
           </form>
 
           <div className="mt-4 text-center">
-            <span className="text-clay-secondary dark:text-slate-400 text-sm">
+            <span className="text-clay-secondary dark:text-[#969696] text-xs">
               Already have an account?{' '}
-              <Link to="/login" className="text-primary-500 dark:text-primary-400 hover:text-primary-600 dark:hover:text-primary-300">
+              <Link to="/login" className="text-[#007acc] hover:text-[#006bb3]">
                 Sign in
               </Link>
             </span>

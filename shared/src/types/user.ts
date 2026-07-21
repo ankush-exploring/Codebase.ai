@@ -3,7 +3,7 @@ export interface User {
   email: string;
   name: string;
   avatar?: string;
-  provider: 'local' | 'google';
+  provider: 'local';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -12,7 +12,6 @@ export interface UserCreate {
   email: string;
   name: string;
   password?: string;
-  provider?: 'local' | 'google';
-  providerId?: string;
+  provider?: 'local';
   avatar?: string;
 }
