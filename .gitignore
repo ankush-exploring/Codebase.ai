@@ -52,3 +52,6 @@ docker/data/
 
 # Qdrant
 qdrant_storage/
+
+.vercel
+.env*
