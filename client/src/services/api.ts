@@ -12,8 +12,10 @@ function cacheKey(method: string, url: string): string {
   return `${method}:${url}`;
 }
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: `${API_BASE}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
   },

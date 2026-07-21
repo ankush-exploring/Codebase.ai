@@ -56,7 +56,7 @@ export const config = {
   },
 
   cors: {
-    origin: process.env.NODE_ENV === 'production' ? process.env.API_URL : 'http://localhost:5173',
+    origin: process.env.CORS_ORIGIN || (process.env.NODE_ENV === 'production' ? process.env.API_URL : 'http://localhost:5173'),
     credentials: true,
   },
 } as const;
