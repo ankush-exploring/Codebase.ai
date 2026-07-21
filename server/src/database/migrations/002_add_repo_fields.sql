@@ -1,0 +1,4 @@
+ALTER TABLE repositories ADD COLUMN source VARCHAR(50) NOT NULL DEFAULT 'url';
+ALTER TABLE repositories ADD COLUMN file_count INTEGER DEFAULT 0;
+ALTER TABLE repositories ADD COLUMN total_size BIGINT DEFAULT 0;
+ALTER TABLE repositories ADD COLUMN error_msg TEXT;

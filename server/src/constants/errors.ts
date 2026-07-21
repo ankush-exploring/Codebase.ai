@@ -1,0 +1,15 @@
+export const ERROR_MESSAGES = {
+  BAD_REQUEST: 'Bad request',
+  UNAUTHORIZED: 'Unauthorized access',
+  FORBIDDEN: 'Access forbidden',
+  NOT_FOUND: 'Resource not found',
+  CONFLICT: 'Resource already exists',
+  VALIDATION_ERROR: 'Validation failed',
+  INTERNAL_ERROR: 'Internal server error',
+  RATE_LIMIT_EXCEEDED: 'Too many requests',
+  INVALID_CREDENTIALS: 'Invalid email or password',
+  ACCOUNT_LOCKED: 'Account has been locked',
+  TOKEN_EXPIRED: 'Token has expired',
+  TOKEN_INVALID: 'Invalid token',
+  REFRESH_TOKEN_INVALID: 'Invalid refresh token',
+} as const;
