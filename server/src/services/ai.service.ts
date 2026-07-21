@@ -102,7 +102,7 @@ export const aiService = {
       if (model) {
         try {
           const chat = model.startChat({
-            systemInstruction: fullSystemPrompt,
+            systemInstruction: { parts: [{ text: fullSystemPrompt }] },
             history: messages.slice(0, -1).map((m) => ({
               role: m.role === 'user' ? 'user' : 'model',
               parts: [{ text: m.content }],
@@ -189,7 +189,7 @@ export const aiService = {
       if (model) {
         try {
           const chat = model.startChat({
-            systemInstruction: fullSystemPrompt,
+            systemInstruction: { parts: [{ text: fullSystemPrompt }] },
             history: messages.slice(0, -1).map((m) => ({
               role: m.role === 'user' ? 'user' : 'model',
               parts: [{ text: m.content }],
