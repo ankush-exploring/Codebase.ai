@@ -36,7 +36,8 @@ export const chatApi = {
 
   sendMessage: async function* (chatId: string, content: string) {
     const token = localStorage.getItem('accessToken');
-    const response = await fetch(`/api/v1/chats/${chatId}/messages`, {
+    const API_BASE = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${API_BASE}/api/v1/chats/${chatId}/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
