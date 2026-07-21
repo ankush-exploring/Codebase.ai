@@ -120,9 +120,7 @@ export const aiService = {
           callbacks.onDone(fullResponse);
           return;
         } catch (err: any) {
-          logger.error('Gemini streaming error:', { error: err.message });
-          callbacks.onError(err);
-          return;
+          logger.warn('Gemini failed, falling back to mock:', { error: err.message });
         }
       }
     }
@@ -199,8 +197,7 @@ export const aiService = {
           const response = result.response.text();
           return { response, citations };
         } catch (err: any) {
-          logger.error('Gemini error:', { error: err.message });
-          return { response: 'Gemini API error: ' + err.message, citations };
+          logger.warn('Gemini failed, falling back to mock:', { error: err.message });
         }
       }
     }
