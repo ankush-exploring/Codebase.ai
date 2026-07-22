@@ -16,7 +16,6 @@
   "dependencies": {
     "@babel/parser": "^7.29.7",
     "@babel/traverse": "^7.29.7",
-    "@google/generative-ai": "^0.24.1",
     "@qdrant/js-client-rest": "^1.18.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",

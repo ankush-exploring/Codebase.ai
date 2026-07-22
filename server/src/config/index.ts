@@ -36,9 +36,9 @@ export const config = {
     model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
   },
 
-  gemini: {
-    apiKey: process.env.GEMINI_API_KEY || '',
-    model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+  groq: {
+    apiKey: process.env.GROQ_API_KEY || '',
+    model: process.env.GROQ_MODEL || 'llama3-70b-8192',
   },
 
   github: {

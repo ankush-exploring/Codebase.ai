@@ -28,28 +28,24 @@ export interface StreamCallbacks {
 }
 
 let openaiClient: any = null;
-let geminiModel: any = null;
 
 async function getOpenAI() {
-  if (!config.openai.apiKey && !config.openai.baseURL) return null;
+  if (!config.openai.apiKey && !config.openai.baseURL && !config.groq.apiKey) return null;
   if (!openaiClient) {
     const { OpenAI } = await import('openai');
-    openaiClient = new OpenAI({
-      apiKey: config.openai.apiKey || 'ollama',
-      baseURL: config.openai.baseURL || undefined,
-    });
+    if (config.aiProvider === 'groq') {
+      openaiClient = new OpenAI({
+        apiKey: config.groq.apiKey,
+        baseURL: 'https://api.groq.com/openai/v1',
+      });
+    } else {
+      openaiClient = new OpenAI({
+        apiKey: config.openai.apiKey || 'ollama',
+        baseURL: config.openai.baseURL || undefined,
+      });
+    }
   }
   return openaiClient;
-}
-
-async function getGemini() {
-  if (!config.gemini.apiKey) return null;
-  if (!geminiModel) {
-    const { GoogleGenerativeAI } = await import('@google/generative-ai');
-    const genAI = new GoogleGenerativeAI(config.gemini.apiKey);
-    geminiModel = genAI.getGenerativeModel({ model: config.gemini.model });
-  }
-  return geminiModel;
 }
 
 function generateMockResponse(query: string, citations: Citation[]): string {
@@ -97,34 +93,6 @@ export const aiService = {
     const contextPrompt = buildContextPrompt(citations);
     const fullSystemPrompt = SYSTEM_PROMPT + '\n\n' + contextPrompt;
 
-    if (config.aiProvider === 'gemini') {
-      const model = await getGemini();
-      if (model) {
-        try {
-          const chat = model.startChat({
-            systemInstruction: { parts: [{ text: fullSystemPrompt }] },
-            history: messages.slice(0, -1).map((m) => ({
-              role: m.role === 'user' ? 'user' : 'model',
-              parts: [{ text: m.content }],
-            })),
-          });
-          const result = await chat.sendMessageStream(lastUserMessage?.content || '');
-          let fullResponse = '';
-          for await (const chunk of result.stream) {
-            const text = chunk.text();
-            if (text) {
-              fullResponse += text;
-              callbacks.onToken(text);
-            }
-          }
-          callbacks.onDone(fullResponse);
-          return;
-        } catch (err: any) {
-          logger.warn('Gemini failed, falling back to mock:', { error: err.message });
-        }
-      }
-    }
-
     const client = await getOpenAI();
 
     if (!client) {
@@ -142,7 +110,7 @@ export const aiService = {
 
     try {
       const stream = await client.chat.completions.create({
-        model: config.openai.model,
+        model: config.aiProvider === 'groq' ? config.groq.model : config.openai.model,
         messages: apiMessages,
         stream: true,
         max_tokens: 2048,
@@ -182,26 +150,6 @@ export const aiService = {
     const contextPrompt = buildContextPrompt(citations);
     const fullSystemPrompt = SYSTEM_PROMPT + '\n\n' + contextPrompt;
 
-    if (config.aiProvider === 'gemini') {
-      const model = await getGemini();
-      if (model) {
-        try {
-          const chat = model.startChat({
-            systemInstruction: { parts: [{ text: fullSystemPrompt }] },
-            history: messages.slice(0, -1).map((m) => ({
-              role: m.role === 'user' ? 'user' : 'model',
-              parts: [{ text: m.content }],
-            })),
-          });
-          const result = await chat.sendMessage(lastUserMessage?.content || '');
-          const response = result.response.text();
-          return { response, citations };
-        } catch (err: any) {
-          logger.warn('Gemini failed, falling back to mock:', { error: err.message });
-        }
-      }
-    }
-
     const client = await getOpenAI();
 
     if (!client) {
@@ -212,7 +160,7 @@ export const aiService = {
 
     try {
       const completion = await client.chat.completions.create({
-        model: config.openai.model,
+        model: config.aiProvider === 'groq' ? config.groq.model : config.openai.model,
         messages: apiMessages,
         max_tokens: 2048,
         temperature: 0.3,
