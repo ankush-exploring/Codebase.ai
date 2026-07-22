@@ -4,7 +4,6 @@ import logger from '../logger/index.js';
 
 const COLLECTION_DIMENSIONS = 1536;
 
-// In-memory fallback when Qdrant is unavailable
 const memoryStore: Map<string, { vector: number[]; payload: Record<string, unknown> }[]> = new Map();
 
 function getClient(): QdrantClient | null {
@@ -45,36 +44,34 @@ function cosineSimilarity(a: number[], b: number[]): number {
   return denom === 0 ? 0 : dot / denom;
 }
 
-let qdrantAvailable: boolean | null = null;
-
-async function checkQdrant(): Promise<boolean> {
-  if (qdrantAvailable !== null) return qdrantAvailable;
+async function tryQdrant<T>(fn: (client: QdrantClient) => Promise<T>): Promise<T | null> {
   const client = getClient();
-  if (!client) { qdrantAvailable = false; return false; }
+  if (!client) return null;
   try {
-    await client.getCollections();
-    qdrantAvailable = true;
-  } catch {
-    qdrantAvailable = false;
+    return await fn(client);
+  } catch (err) {
+    logger.warn('Qdrant operation failed, falling back to memory', { error: (err as Error).message });
+    return null;
   }
-  return qdrantAvailable;
 }
 
 export const vectorService = {
   ensureCollection: async (repoId: string): Promise<void> => {
-    if (await checkQdrant()) {
-      const client = getClient()!;
-      const name = collectionName(repoId);
+    const name = collectionName(repoId);
+
+    const created = await tryQdrant(async (client) => {
       try {
         await client.getCollection(name);
+        return true;
       } catch {
         await client.createCollection(name, {
           vectors: { size: COLLECTION_DIMENSIONS, distance: 'Cosine' },
         });
         logger.info('Created Qdrant collection', { collection: name });
+        return true;
       }
-    }
-    const name = collectionName(repoId);
+    });
+
     if (!memoryStore.has(name)) {
       memoryStore.set(name, []);
     }
@@ -83,14 +80,13 @@ export const vectorService = {
   upsertPoints: async (repoId: string, points: VectorPoint[]): Promise<void> => {
     const name = collectionName(repoId);
 
-    if (await checkQdrant()) {
-      const client = getClient()!;
+    await tryQdrant(async (client) => {
       await vectorService.ensureCollection(repoId);
       const BATCH = 100;
       for (let i = 0; i < points.length; i += BATCH) {
         await client.upsert(name, { points: points.slice(i, i + BATCH) });
       }
-    }
+    });
 
     const existing = memoryStore.get(name) || [];
     for (const p of points) {
@@ -107,24 +103,21 @@ export const vectorService = {
   ): Promise<SearchResult[]> => {
     const name = collectionName(repoId);
 
-    if (await checkQdrant()) {
-      const client = getClient()!;
-      try {
-        const results = await client.search(name, {
-          vector: queryVector,
-          limit: topK,
-          score_threshold: scoreThreshold,
-          with_payload: true,
-        });
-        return results.map((r) => ({
-          id: r.id,
-          score: r.score,
-          payload: (r.payload as Record<string, unknown>) || {},
-        }));
-      } catch {
-        // fall through to memory
-      }
-    }
+    const qdrantResult = await tryQdrant(async (client) => {
+      const results = await client.search(name, {
+        vector: queryVector,
+        limit: topK,
+        score_threshold: scoreThreshold,
+        with_payload: true,
+      });
+      return results.map((r) => ({
+        id: r.id,
+        score: r.score,
+        payload: (r.payload as Record<string, unknown>) || {},
+      }));
+    });
+
+    if (qdrantResult) return qdrantResult;
 
     const points = memoryStore.get(name) || [];
     const scored = points
@@ -142,22 +135,21 @@ export const vectorService = {
 
   deleteCollection: async (repoId: string): Promise<void> => {
     const name = collectionName(repoId);
-    if (await checkQdrant()) {
-      const client = getClient()!;
-      try { await client.deleteCollection(name); } catch { }
-    }
+    await tryQdrant(async (client) => {
+      await client.deleteCollection(name);
+    });
     memoryStore.delete(name);
   },
 
   countPoints: async (repoId: string): Promise<number> => {
     const name = collectionName(repoId);
-    if (await checkQdrant()) {
-      const client = getClient()!;
-      try {
-        const info = await client.getCollection(name);
-        return info.points_count ?? 0;
-      } catch { }
-    }
+
+    const qdrantCount = await tryQdrant(async (client) => {
+      const info = await client.getCollection(name);
+      return info.points_count ?? 0;
+    });
+
+    if (qdrantCount !== null) return qdrantCount;
     return (memoryStore.get(name) || []).length;
   },
 };
