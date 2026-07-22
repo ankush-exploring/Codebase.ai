@@ -84,6 +84,8 @@ export const ragService = {
     await vectorService.ensureCollection(repoId);
     await vectorService.upsertPoints(repoId, points);
 
+    await db.update(repositories).set({ status: 'embedded' }).where(eq(repositories.id, repoId));
+
     logger.info('Embedded chunks into Qdrant', { count: points.length, repoId });
 
     await cacheService.invalidatePattern(`rag:query:${repoId}:*`);
