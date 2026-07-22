@@ -21,9 +21,15 @@ export default function Footer() {
             <Link to="/license" className="text-clay-secondary dark:text-[#969696] hover:text-[#007acc] dark:hover:text-[#007acc] transition-colors">License</Link>
           </div>
 
-          <div className="flex items-center gap-4">
-            <a href="mailto:fromthepoint0210@gmail.com" className="text-clay-secondary dark:text-[#969696] hover:text-[#007acc] dark:hover:text-[#007acc] transition-colors text-sm">
-              fromthepoint0210@gmail.com
+          <div className="flex items-center gap-3">
+            <a
+              href="mailto:fromthepoint0210@gmail.com"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[#007acc] text-white rounded-lg hover:bg-[#006bb3] transition-all shadow-clay-sm font-medium"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              Help
             </a>
             <a href="https://www.linkedin.com/in/ankush-vishwakarma-b48b1036b/" target="_blank" rel="noopener noreferrer" className="text-clay-secondary dark:text-[#969696] hover:text-[#007acc] dark:hover:text-[#007acc] transition-colors" aria-label="LinkedIn profile">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

@@ -15,6 +15,9 @@ import SettingsPage from './pages/SettingsPage';
 import QueryPage from './pages/QueryPage';
 import CodeExplorerPage from './pages/CodeExplorerPage';
 import ArchitecturePage from './pages/ArchitecturePage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import LicensePage from './pages/LicensePage';
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/license" element={<LicensePage />} />
 
             <Route
               path="/dashboard"
