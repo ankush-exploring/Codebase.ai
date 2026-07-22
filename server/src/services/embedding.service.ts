@@ -8,10 +8,17 @@ const DIMENSIONS = 1536;
 let openaiClient: any = null;
 
 async function getOpenAI() {
-  if (!config.openai.apiKey) return null;
+  if (!config.openai.apiKey && config.aiProvider !== 'ollama') return null;
   if (!openaiClient) {
     const { OpenAI } = await import('openai');
-    openaiClient = new OpenAI({ apiKey: config.openai.apiKey });
+    if (config.aiProvider === 'ollama') {
+      openaiClient = new OpenAI({
+        apiKey: 'ollama',
+        baseURL: config.ollama.baseURL + '/v1',
+      });
+    } else {
+      openaiClient = new OpenAI({ apiKey: config.openai.apiKey });
+    }
   }
   return openaiClient;
 }

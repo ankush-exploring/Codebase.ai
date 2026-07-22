@@ -30,13 +30,18 @@ export interface StreamCallbacks {
 let openaiClient: any = null;
 
 async function getOpenAI() {
-  if (!config.openai.apiKey && !config.openai.baseURL && !config.groq.apiKey) return null;
+  if (!config.openai.apiKey && !config.openai.baseURL && !config.groq.apiKey && config.aiProvider !== 'ollama') return null;
   if (!openaiClient) {
     const { OpenAI } = await import('openai');
     if (config.aiProvider === 'groq') {
       openaiClient = new OpenAI({
         apiKey: config.groq.apiKey,
         baseURL: 'https://api.groq.com/openai/v1',
+      });
+    } else if (config.aiProvider === 'ollama') {
+      openaiClient = new OpenAI({
+        apiKey: 'ollama',
+        baseURL: config.ollama.baseURL + '/v1',
       });
     } else {
       openaiClient = new OpenAI({
@@ -46,6 +51,12 @@ async function getOpenAI() {
     }
   }
   return openaiClient;
+}
+
+function getModel(): string {
+  if (config.aiProvider === 'groq') return config.groq.model;
+  if (config.aiProvider === 'ollama') return config.ollama.model;
+  return config.openai.model;
 }
 
 function generateMockResponse(query: string, citations: Citation[]): string {
@@ -110,7 +121,7 @@ export const aiService = {
 
     try {
       const stream = await client.chat.completions.create({
-        model: config.aiProvider === 'groq' ? config.groq.model : config.openai.model,
+        model: getModel(),
         messages: apiMessages,
         stream: true,
         max_tokens: 2048,
@@ -160,7 +171,7 @@ export const aiService = {
 
     try {
       const completion = await client.chat.completions.create({
-        model: config.aiProvider === 'groq' ? config.groq.model : config.openai.model,
+        model: getModel(),
         messages: apiMessages,
         max_tokens: 2048,
         temperature: 0.3,

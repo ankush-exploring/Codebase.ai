@@ -134,7 +134,8 @@ export function parseJsTs(content: string, filePath: string): ExtractedMetadata 
     },
     ExportDefaultDeclaration(path) {
       const node = path.node;
-      const name = node.declaration?.id?.name || 'default';
+      const decl = node.declaration as any;
+      const name = decl?.id?.name || decl?.name || 'default';
       exports.push({ name, type: 'default' });
     },
   });

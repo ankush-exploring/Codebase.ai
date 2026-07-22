@@ -54,19 +54,23 @@ export default function SettingsPage() {
         </div>
 
         <div className="clay-card p-5 shadow-clay-sm">
-          <h2 className="text-base font-semibold text-clay dark:text-[#cccccc] mb-3">About</h2>
-          <div className="space-y-2 text-sm">
+          <h2 className="text-base font-semibold text-clay dark:text-[#cccccc] mb-3">AI Provider</h2>
+          <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-clay-secondary dark:text-[#969696]">Version</span>
-              <span className="text-clay dark:text-[#cccccc]">0.1.0</span>
+              <span className="text-clay-secondary dark:text-[#969696]">Provider</span>
+              <span className="text-clay dark:text-[#cccccc]">Ollama (Free, Local)</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-clay-secondary dark:text-[#969696]">AI Model</span>
-              <span className="text-clay dark:text-[#cccccc]">GPT-4o Mini</span>
+              <span className="text-clay-secondary dark:text-[#969696]">Model</span>
+              <span className="text-clay dark:text-[#cccccc]">llama3.2:1b</span>
             </div>
             <div className="flex justify-between">
               <span className="text-clay-secondary dark:text-[#969696]">Embedding</span>
-              <span className="text-clay dark:text-[#cccccc]">text-embedding-3-small</span>
+              <span className="text-clay dark:text-[#cccccc]">Deterministic (No API Key Needed)</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-clay-secondary dark:text-[#969696]">Vector Store</span>
+              <span className="text-clay dark:text-[#cccccc]">In-Memory (No Qdrant Needed)</span>
             </div>
           </div>
         </div>

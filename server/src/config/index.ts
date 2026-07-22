@@ -28,17 +28,24 @@ export const config = {
     apiKey: process.env.QDRANT_API_KEY || '',
   },
 
-  aiProvider: process.env.AI_PROVIDER || 'openai',
+  aiProvider: (process.env.AI_PROVIDER || '') as 'openai' | 'groq' | 'ollama' | '',
 
   openai: {
     apiKey: process.env.OPENAI_API_KEY || '',
-    baseURL: process.env.OPENAI_BASE_URL || '',
+    baseURL:
+      process.env.OPENAI_BASE_URL ||
+      (process.env.AI_PROVIDER === 'ollama' ? 'http://localhost:11434/v1' : ''),
     model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
   },
 
   groq: {
     apiKey: process.env.GROQ_API_KEY || '',
-    model: process.env.GROQ_MODEL || 'llama3-70b-8192',
+    model: process.env.GROQ_MODEL || 'llama-3.1-8b-instant',
+  },
+
+  ollama: {
+    baseURL: process.env.OLLAMA_BASE_URL || 'http://localhost:11434',
+    model: process.env.OLLAMA_MODEL || 'llama3.2:1b',
   },
 
   github: {
