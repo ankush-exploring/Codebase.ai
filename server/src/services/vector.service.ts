@@ -2,7 +2,7 @@ import { QdrantClient } from '@qdrant/js-client-rest';
 import { config } from '../config/index.js';
 import logger from '../logger/index.js';
 
-const COLLECTION_DIMENSIONS = 1536;
+const COLLECTION_DIMENSIONS = 384;
 
 const memoryStore: Map<string, { vector: number[]; payload: Record<string, unknown> }[]> = new Map();
 
