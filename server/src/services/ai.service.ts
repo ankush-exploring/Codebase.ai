@@ -11,12 +11,21 @@ Rules:
 - Be concise and helpful.
 - If you're unsure, say "I don't have enough context to answer that."`;
 
+function sanitizeContent(content: string): string {
+  return content
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '[image: $1]')
+    .replace(/src="data:image\/[^"]+"/gi, 'src="[base64-image]"')
+    .replace(/data:image\/[a-z+]+;base64,[a-zA-Z0-9+/=]{100,}/g, '[base64-image-data]')
+    .replace(/<svg[^>]*>[\s\S]*?<\/svg>/gi, '[svg-icon]');
+}
+
 function buildContextPrompt(citations: Citation[]): string {
   if (citations.length === 0) return 'No relevant code context found.';
 
   let context = 'Relevant code context:\n\n';
   citations.forEach((c, i) => {
-    context += `[Citation ${i + 1}] ${c.filePath} (lines ${c.startLine}-${c.endLine}):\n\`\`\`\n${c.content}\n\`\`\`\n\n`;
+    const clean = sanitizeContent(c.content);
+    context += `[Citation ${i + 1}] ${c.filePath} (lines ${c.startLine}-${c.endLine}):\n\`\`\`\n${clean}\n\`\`\`\n\n`;
   });
   return context;
 }
