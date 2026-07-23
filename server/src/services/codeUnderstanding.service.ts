@@ -117,11 +117,7 @@ export const codeUnderstandingService = {
     let explanation = '';
 
     try {
-      const client = await (await import('./ai.service.js')).aiService;
-      const result = await (await import('./ai.service.js')).aiService.chat(
-        messages,
-        repoId
-      );
+      const result = await aiService.chat(messages, repoId);
       explanation = result.response;
     } catch (err: any) {
       logger.warn('AI chat failed for code understanding', { error: err.message });
