@@ -66,13 +66,6 @@ export default function DashboardPage() {
             {repos.reduce((sum, r) => sum + (r.fileCount || 0), 0)}
           </div>
         </div>
-        <div className="clay-card p-6 shadow-clay-sm relative overflow-hidden group hover:shadow-clay transition-shadow">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-green-500 to-emerald-400" />
-          <div className="text-sm text-clay-secondary dark:text-slate-400 mb-1">Status</div>
-          <div className="text-3xl font-bold text-green-500 dark:text-green-400">
-            {repos.filter((r) => r.status === 'ready').length} ready
-          </div>
-        </div>
       </div>
 
       {isLoading ? (

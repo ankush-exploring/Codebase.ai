@@ -1,4 +1,4 @@
-export type RepositoryStatus = 'pending' | 'cloning' | 'parsing' | 'ready' | 'error';
+export type RepositoryStatus = 'pending' | 'cloning' | 'parsing' | 'parsed' | 'ready' | 'embedded' | 'error';
 
 export interface Repository {
   id: string;

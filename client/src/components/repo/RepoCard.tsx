@@ -58,16 +58,14 @@ export default function RepoCard({ repo, onDelete, onParse }: RepoCardProps) {
             {repo.language}
           </span>
         )}
-        {repo.status === 'ready' && (
+        {(repo.status === 'ready' || repo.status === 'parsed' || repo.status === 'embedded') && (
           <>
             <span>{repo.fileCount} files</span>
-            <span>{formatSize(repo.totalSize)}</span>
-          </>
-        )}
-        {(repo.status as string) === 'parsed' && (
-          <>
-            <span>{repo.fileCount} files</span>
-            <span>{(repo.metadata as Record<string, unknown>)?.totalChunks as number || 0} chunks</span>
+            {(repo.status === 'parsed' || repo.status === 'embedded') ? (
+              <span>{(repo.metadata as Record<string, unknown>)?.totalChunks as number || 0} chunks</span>
+            ) : (
+              <span>{formatSize(repo.totalSize)}</span>
+            )}
           </>
         )}
         <span className="text-clay-muted dark:text-slate-600">{formatDate(repo.createdAt)}</span>
@@ -102,7 +100,7 @@ export default function RepoCard({ repo, onDelete, onParse }: RepoCardProps) {
             Parsing...
           </div>
         )}
-        {(repo.status as string) === 'parsed' && (
+        {(repo.status === 'parsed' || repo.status === 'embedded') && (
           <>
             <Link
               to={`/repos/${repo.id}/query`}
