@@ -1,10 +1,42 @@
+import fs from 'fs/promises';
+import path from 'path';
 import { QdrantClient } from '@qdrant/js-client-rest';
 import { config } from '../config/index.js';
 import logger from '../logger/index.js';
 
 const COLLECTION_DIMENSIONS = 384;
 
-const memoryStore: Map<string, { vector: number[]; payload: Record<string, unknown> }[]> = new Map();
+const DB_PATH = path.resolve('data/vectors.json');
+type StoredPoint = { vector: number[]; payload: Record<string, unknown> };
+const memoryStore: Map<string, StoredPoint[]> = new Map();
+
+async function loadStore(): Promise<void> {
+  try {
+    const raw = await fs.readFile(DB_PATH, 'utf-8');
+    const data = JSON.parse(raw) as Record<string, StoredPoint[]>;
+    for (const [key, points] of Object.entries(data)) {
+      memoryStore.set(key, points);
+    }
+    logger.info('Restored vector store from disk', { collections: memoryStore.size });
+  } catch {
+    logger.info('No persisted vector store found, starting fresh');
+  }
+}
+
+async function saveStore(): Promise<void> {
+  try {
+    await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
+    const obj: Record<string, StoredPoint[]> = {};
+    for (const [key, points] of memoryStore) {
+      obj[key] = points;
+    }
+    await fs.writeFile(DB_PATH, JSON.stringify(obj), 'utf-8');
+  } catch (err) {
+    logger.warn('Failed to persist vector store', { error: (err as Error).message });
+  }
+}
+
+loadStore();
 
 function getClient(): QdrantClient | null {
   try {
@@ -93,6 +125,7 @@ export const vectorService = {
       existing.push({ vector: p.vector, payload: p.payload });
     }
     memoryStore.set(name, existing);
+    await saveStore();
   },
 
   search: async (
@@ -139,6 +172,7 @@ export const vectorService = {
       await client.deleteCollection(name);
     });
     memoryStore.delete(name);
+    await saveStore();
   },
 
   countPoints: async (repoId: string): Promise<number> => {
