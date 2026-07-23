@@ -87,7 +87,7 @@ export default function ChatPage() {
               className="w-full px-3 py-1.5 clay-input rounded-lg text-xs text-clay dark:text-[#cccccc] focus:outline-none focus:border-[#007acc] transition-colors"
             >
               <option value="">No repository</option>
-              {repos.filter((r) => r.status === 'parsed' || r.status === 'ready').map((r) => (
+              {repos.filter((r) => r.status === 'parsed' || r.status === 'ready' || r.status === 'embedded').map((r) => (
                 <option key={r.id} value={r.id}>{r.name}</option>
               ))}
             </select>

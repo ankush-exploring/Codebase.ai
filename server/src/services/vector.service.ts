@@ -99,7 +99,7 @@ export const vectorService = {
     repoId: string,
     queryVector: number[],
     topK: number = 10,
-    scoreThreshold: number = 0.3
+    scoreThreshold: number = 0.1
   ): Promise<SearchResult[]> => {
     const name = collectionName(repoId);
 
