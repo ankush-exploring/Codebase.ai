@@ -10,6 +10,10 @@ interface FolderNode {
   fileCount: number;
 }
 
+function escapeLabel(s: string): string {
+  return s.replace(/"/g, '&quot;').replace(/\(/g, '&#40;').replace(/\)/g, '&#41;').replace(/\[/g, '&#91;').replace(/\]/g, '&#93;');
+}
+
 function buildFolderTree(filePaths: string[]): string {
   const root: FolderNode = { name: '/', path: '', children: new Map(), fileCount: 0 };
 
@@ -32,6 +36,7 @@ function buildFolderTree(filePaths: string[]): string {
   }
 
   let mermaid = 'graph TD\n';
+  mermaid += '  root["/"]:::root\n';
   let idCounter = 0;
 
   function traverse(node: FolderNode, parentId: string) {
@@ -39,13 +44,12 @@ function buildFolderTree(filePaths: string[]): string {
     for (const [name, child] of sorted) {
       const nodeId = `n${++idCounter}`;
       const label = child.fileCount > 0 ? `${name} (${child.fileCount})` : name;
-      mermaid += `  ${parentId} --> ${nodeId}["${label}"]\n`;
+      mermaid += `  ${parentId} --> ${nodeId}["${escapeLabel(label)}"]\n`;
       traverse(child, nodeId);
     }
   }
 
   traverse(root, 'root');
-  mermaid += '  root["/" ]:::root\n';
   mermaid += '  classDef root fill:#3b82f6,stroke:#1d4ed8,color:#fff\n';
   mermaid += '  classDef folder fill:#6366f1,stroke:#4f46e5,color:#fff\n';
 
@@ -75,7 +79,7 @@ function buildDependencyGraph(
   }
 
   for (const [path, id] of nodeIds) {
-    const short = path.split('/').pop() || path;
+    const short = escapeLabel(path.split('/').pop() || path);
     const isExternal = !path.startsWith('.') && !path.startsWith('/');
     if (isExternal) {
       mermaid += `  ${id}["${short}"]:::external\n`;
